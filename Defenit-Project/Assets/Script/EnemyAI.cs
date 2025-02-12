@@ -22,4 +22,12 @@ public class EnemyAI : MonoBehaviour
 
         transform.position = Vector2.MoveTowards(this.transform.position, objective.transform.position, speed * Time.deltaTime);
     }
+
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.gameObject == objective)
+        {
+            Destroy(gameObject); // Menghancurkan enemy saat mencapai objective
+        }
+    }
 }
