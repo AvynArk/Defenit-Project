@@ -4,30 +4,36 @@ using UnityEngine;
 
 public class EnemyAI : MonoBehaviour
 {
-    public GameObject objective;
+    private Transform objective; // Ubah dari public ke private
     public float speed;
 
-    private float distance;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        // Cari game object bernama "Objective" di scene
+        GameObject obj = GameObject.Find("Objective");
+
+        if (obj != null)
+        {
+            objective = obj.transform;
+        }
+        else
+        {
+            Debug.LogError("Objective tidak ditemukan di scene!");
+        }
     }
 
-    // Update is called once per frame
     void Update()
     {
-        distance = Vector2.Distance(transform.position, objective.transform.position);
-        Vector2 direction = objective.transform.position - transform.position;
+        if (objective == null) return;
 
-        transform.position = Vector2.MoveTowards(this.transform.position, objective.transform.position, speed * Time.deltaTime);
+        transform.position = Vector2.MoveTowards(transform.position, objective.position, speed * Time.deltaTime);
     }
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.gameObject == objective)
+        if (other.gameObject == objective.gameObject) // Cek GameObject-nya langsung
         {
-            Destroy(gameObject); // Menghancurkan enemy saat mencapai objective
+            Destroy(gameObject); // Hancurkan enemy
         }
     }
 }
